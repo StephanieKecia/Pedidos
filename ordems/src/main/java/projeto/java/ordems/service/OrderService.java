@@ -6,6 +6,7 @@ import projeto.java.ordems.entity.OrderItem;
 import projeto.java.ordems.listener.dto.OrderCreatedEvent;
 import projeto.java.ordems.repository.OrderRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -20,12 +21,19 @@ public class OrderService {
     public void save(OrderCreatedEvent event) {
 
         var entity = new OrderEntity();
+
         entity.setOrderId(event.codigoPedido());
         entity.setCustomerId(event.codigoCliente());
-        //entity.setTotalPrice();
-
-
         entity.setItems(getOrderItems(event));
+        entity.setTotalPrice(getTotal(event));
+
+        orderRepository.save(entity);
+    }
+
+    private BigDecimal getTotal(OrderCreatedEvent event) {
+        return event.itens().stream().map(i -> i.preco().multiply(BigDecimal.valueOf(i.quantidade())))
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
     }
 
     private static List<OrderItem> getOrderItems(OrderCreatedEvent event) {
