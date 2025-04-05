@@ -1,6 +1,10 @@
 package projeto.java.ordems.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
+import projeto.java.ordems.controller.dto.OrderResponse;
 import projeto.java.ordems.entity.OrderEntity;
 import projeto.java.ordems.entity.OrderItem;
 import projeto.java.ordems.listener.dto.OrderCreatedEvent;
@@ -29,6 +33,13 @@ public class OrderService {
 
         orderRepository.save(entity);
     }
+
+    public Page<OrderResponse> findAllByCustomerId(Long customerId, PageRequest pageRequest) {
+        var orders = orderRepository.findAllByCustomerId(customerId, pageRequest);
+
+        return orders.map(OrderResponse::fromEntity);
+    }
+
 
     private BigDecimal getTotal(OrderCreatedEvent event) {
         return event.itens().stream().map(i -> i.preco().multiply(BigDecimal.valueOf(i.quantidade())))
