@@ -10,6 +10,6 @@
 
 ###
 
-<p align="left">O projeto foi realizado com base em um teste para vaga de desenvolvedor java, entretanto, fiz o projeto apenas para estudos pessoais!</p>
+<p align="left">O projeto foi realizado com base em um teste para vaga de desenvolvedor java, entretanto, fiz o projeto apenas testando meu conhecimento para continuar atualizada com o mercado!</p>
 
 ###
